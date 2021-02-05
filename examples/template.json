@@ -1,0 +1,213 @@
+{
+  "cashfree_yomoyo1": {
+    "name": "cashfree_yomoyo1充值对账单",
+    "provider": "",
+    "database_columns_map": {
+      "channel_reconci_channel_order_no": "Event Id",
+      "channel_reconci_channel_key": "Event Id",
+      "channel_reconci_amount": "Amount (in Rs.)",
+      "channel_reconci_status": "Particulars",
+      "channel_reconci_order_created_at": "Date",
+      "channel_reconci_order_finished_at": "Date",
+      "channel_reconci_date": "Date",
+      "channel_reconci_type": "Particulars",
+      "channel_reconci_product_type": "Particulars",
+      "channel_reconci_channel_name": "Particulars"
+    },
+    "filter": "\\import\\examples\\filter\\DemoFilter",
+    "model": "\\import\\examples\\model\\ChannelReconci",
+    "read_rows": 1000,
+    "business_channel": "payment",
+    "template": {
+      "channel_reconci_channel_order_no": "Event Id",
+      "channel_reconci_channel_key": "Event Id",
+      "channel_reconci_amount": "Amount (in Rs.)",
+      "channel_reconci_status": "Particulars",
+      "channel_reconci_order_created_at": "Date",
+      "channel_reconci_order_finished_at": "Date",
+      "channel_reconci_date": "Date",
+      "channel_reconci_type": "Particulars",
+      "channel_reconci_product_type": "Particulars",
+      "channel_reconci_channel_name": "Particulars"
+    },
+    "formats": {
+      "channel_reconci_date": [
+        [
+          "defaultOnEmpty",
+          "01-01-1001"
+        ],
+        [
+          "dateConversion",
+          "d-m-Y",
+          "Y-m-d"
+        ]
+      ],
+      "channel_reconci_order_finished_at": [
+        [
+          "defaultOnEmpty",
+          "01-01-1001"
+        ],
+        [
+          "dateConversion",
+          "d-m-Y",
+          "Y-m-d 00:00:00"
+        ]
+      ],
+      "channel_reconci_order_created_at": [
+        [
+          "defaultOnEmpty",
+          "01-01-1001"
+        ],
+        [
+          "dateConversion",
+          "d-m-Y",
+          "Y-m-d 00:00:00"
+        ]
+      ],
+      "channel_reconci_created_at": [
+        [
+          "now",
+          "Y-m-d H:i:s"
+        ]
+      ],
+      "channel_reconci_status": [
+        [
+          "in",
+          {
+            "Account Credit": 2
+          }
+        ]
+      ],
+      "channel_reconci_type": [
+        [
+          "in",
+          {
+            "Account Credit": "withhold"
+          }
+        ]
+      ],
+      "channel_reconci_channel_name": [
+        [
+          "in",
+          {
+            "Account Credit": "cashfree_yomoyo1_withdraw"
+          }
+        ]
+      ],
+      "channel_reconci_product_type": [
+        [
+          "in",
+          {
+            "Account Credit": "recharge"
+          }
+        ]
+      ],
+      "channel_reconci_amount": [
+        [
+          "string2Amount",
+          100,
+          true
+        ]
+      ]
+    },
+    "complement": {
+      "channel_reconci_remark": "手动上传",
+      "channel_reconci_bank_code": "",
+      "channel_reconci_payment_mode": "",
+      "channel_reconci_service_charge": 0,
+      "channel_reconci_service_tax": 0,
+      "channel_reconci_fees": 0,
+      "channel_reconci_settlement_amount": 0,
+      "channel_reconci_created_at": "now",
+      "channel_reconci_merchant_no": "yomoyo1",
+      "channel_reconci_provider_code": "cashfree"
+    },
+    "desensitise": {
+      "channel_reconci_account": 2,
+      "channel_reconci_user_name": 4
+    }
+  },
+  "cashfree_yomoyo2": {
+    "name": "cashfree_yomoyo2代付对账单补充(冲正订单)",
+    "provider": "",
+    "template": {
+      "channel_reconci_order_finished_at": "Date",
+      "channel_reconci_date": "Date",
+      "channel_reconci_channel_order_no": "Event Id",
+      "channel_reconci_status": "Particulars",
+      "channel_reconci_service_charge": "Amount (in Rs.)",
+      "channel_reconci_service_tax": "Amount (in Rs.)",
+      "channel_reconci_amount": "Amount (in Rs.)"
+    },
+    "formats": {
+      "channel_reconci_date": [
+        [
+          "defaultOnEmpty",
+          "01-01-1001"
+        ],
+        [
+          "dateConversion",
+          "d-m-Y",
+          "Y-m-d"
+        ]
+      ],
+      "channel_reconci_order_finished_at": [
+        [
+          "defaultOnEmpty",
+          "01-01-1001"
+        ],
+        [
+          "dateConversion",
+          "d-m-Y",
+          "Y-m-d H:i:s"
+        ]
+      ],
+      "channel_reconci_status": [
+        [
+          "expression",
+          "self == 'Transfer Reversal' ? 3 : self"
+        ]
+      ],
+      "channel_reconci_service_charge": [
+        [
+          "expression",
+          "round(self * 100 % 10000 / 1.18, 0)"
+        ]
+      ],
+      "channel_reconci_service_tax": [
+        [
+          "expression",
+          "round(self * 100 % 10000 - channel_reconci_service_charge, 0)"
+        ]
+      ],
+      "channel_reconci_fees": [
+        [
+          "expression",
+          "channel_reconci_service_charge + channel_reconci_service_tax"
+        ]
+      ],
+      "channel_reconci_amount": [
+        [
+          "expression",
+          "round(self*100,0)-channel_reconci_service_charge-channel_reconci_service_tax"
+        ]
+      ],
+      "channel_reconci_settlement_amount": [
+        [
+          "expression",
+          "round(self*100,0)"
+        ]
+      ]
+    },
+    "complement": {
+      "channel_reconci_fees": 0,
+      "channel_reconci_settlement_amount": 0,
+      "channel_reconci_remark": "手动上传",
+      "channel_reconci_type": "withdraw",
+      "channel_reconci_product_type": "withdraw",
+      "channel_reconci_merchant_no": "yomoyo1",
+      "channel_reconci_provider_code": "cashfree",
+      "channel_reconci_channel_name": "cashfree_yomoyo1_withdraw"
+    }
+  }
+}

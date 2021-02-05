@@ -1,0 +1,28 @@
+{
+    "name": "kuainiu/import",
+    "description": "KuaiNiu Group Import File Component",
+    "type": "library",
+    "authors": [
+        {
+            "name": "He Ping",
+            "email": "847050412@qq.com"
+        }
+    ],
+    "require": {
+        "ext-json": "*",
+        "phpoffice/phpspreadsheet": "^1.12",
+        "yiisoft/yii2": "^2.0",
+        "nesbot/carbon": "^2.35"
+    },
+    "autoload": {
+        "psr-4": {
+            "import\\":"src/",
+            "import\\examples\\":"examples/",
+            "import\\test\\":"test/"
+        }
+    },
+    "keywords": [
+        "import",
+        "kuainiu"
+    ]
+}
