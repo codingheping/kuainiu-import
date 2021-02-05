@@ -39,7 +39,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
             Yii::$app->i18n->translations['import'] = [
                 'class'            => PhpMessageSource::class,
                 'forceTranslation' => true,
-                'basePath'         => '@vendor/kuainiu/import/src/messages',
+                'basePath'         => '@vendor/codingheping/import/src/messages',
             ];
         }
         $event = new Event();
