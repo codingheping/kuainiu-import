@@ -12,7 +12,7 @@ use yii\web\View;
 
 $this->title = '数据导入';
 
-$this->params['breadcrumbs'][] = ['label' => '对账列表', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => '文件列表', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
